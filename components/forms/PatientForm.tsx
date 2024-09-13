@@ -9,12 +9,12 @@ import CustomFormFiled from "../CustomFormFiled";
 
 export enum FromFieldType {
   INPUT = "input",
-  TEXTAREA="textarea",
-  PHONE_INPUT="phoneInput",
-  CHECKBOX="checkbox",
-  DATE_PICKER="datepicker",
-  SELECT="select",
-  SKELETON= "skeleton"
+  TEXTAREA = "textarea",
+  PHONE_INPUT = "phoneInput",
+  CHECKBOX = "checkbox",
+  DATE_PICKER = "datepicker",
+  SELECT = "select",
+  SKELETON = "skeleton",
 }
 
 const formSchema = z.object({
@@ -45,6 +45,7 @@ const PatientForm = () => {
             <h1 className="header">Hi, There 👋👋</h1>
             <p className="text-dark-700">Schedule Your First Appointment</p>
           </section>
+          {/* form name */}
           <CustomFormFiled
             fieldType={FromFieldType.INPUT}
             control={form.control}
@@ -53,6 +54,24 @@ const PatientForm = () => {
             placeholder="Your Name"
             iconSrc="/assets/icons/user.svg"
             iconAlt="user"
+          />
+          {/* email */}
+          <CustomFormFiled
+            fieldType={FromFieldType.INPUT}
+            control={form.control}
+            name="email"
+            label="Email"
+            placeholder="example@gmail.com"
+            iconSrc="/assets/icons/email.svg"
+            iconAlt="email"
+          />
+          {/* number */}
+          <CustomFormFiled
+            fieldType={FromFieldType.PHONE_INPUT}
+            control={form.control}
+            name="phone"
+            label="Phone Number"
+            placeholder="+880 123456789"
           />
           <Button type="submit">Submit</Button>
         </form>
