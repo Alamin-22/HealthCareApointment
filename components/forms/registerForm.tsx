@@ -12,9 +12,12 @@ import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/actions/patient.actions";
 import { FromFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { GenderOptions } from "@/constants";
 import { Label } from "../ui/label";
+import { Doctors, GenderOptions } from "@/constants";
+import { SelectItem } from "../ui/select";
+import Image from "next/image";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +52,6 @@ const RegisterForm = ({ user }: { user: User }) => {
       console.log(error);
     }
   }
-
   return (
     <div>
       <Form {...form}>
@@ -75,6 +77,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             iconSrc="/assets/icons/user.svg"
             iconAlt="user"
           />
+          {/* email and Number */}
           <div className="flex flex-col gap-6 xl:flex-row">
             {/* email */}
             <CustomFormFiled
@@ -95,6 +98,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               placeholder="+880 123456789"
             />
           </div>
+
           <div className="flex flex-col gap-6 xl:flex-row">
             {/* date  */}
             <CustomFormFiled
@@ -103,24 +107,25 @@ const RegisterForm = ({ user }: { user: User }) => {
               name="birthDate"
               label="Date Of Birth"
             />
-            {/* number */}
+            {/* gender */}
             <CustomFormFiled
               fieldType={FromFieldType.SKELETON}
               control={form.control}
               name="gender"
               label="Gender"
-              renderSkeleton={(filed) => (
+              renderSkeleton={(field) => (
                 <FormControl>
                   <RadioGroup
                     className="flex h-11 gap-6 xl:justify-between"
-                    onValueChange={filed.onChange}
-                    defaultValue={filed.value}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
                   >
-                    {GenderOptions.map((option) => (
-                      <div key={option} className="radio-group">
-                        <RadioGroupItem value={option} id={option}>
-                          <Label htmlFor={option} className="cursor-pointer">{option}</Label>
-                        </RadioGroupItem>
+                    {GenderOptions.map((option, i) => (
+                      <div key={option + i} className="radio-group">
+                        <RadioGroupItem value={option} id={option} />
+                        <Label htmlFor={option} className="cursor-pointer">
+                          {option}
+                        </Label>
                       </div>
                     ))}
                   </RadioGroup>
@@ -128,26 +133,125 @@ const RegisterForm = ({ user }: { user: User }) => {
               )}
             />
           </div>
+          {/* occupation and address */}
           <div className="flex flex-col gap-6 xl:flex-row">
-            {/* email */}
             <CustomFormFiled
               fieldType={FromFieldType.INPUT}
               control={form.control}
-              name="email"
-              label="Email"
-              placeholder="example@gmail.com"
+              name="address"
+              label="Address"
+              placeholder="Your current Address"
               iconSrc="/assets/icons/email.svg"
               iconAlt="email"
             />
-            {/* number */}
+            <CustomFormFiled
+              fieldType={FromFieldType.INPUT}
+              control={form.control}
+              name="occupation"
+              label="Occupation"
+              placeholder="software Engineer"
+              iconSrc="/assets/icons/email.svg"
+              iconAlt="email"
+            />
+          </div>
+          {/*  emergency COntact row*/}
+          <div className="flex flex-col gap-6 xl:flex-row">
+            <CustomFormFiled
+              fieldType={FromFieldType.INPUT}
+              control={form.control}
+              name="emergencyContactName"
+              label="Emergency Contact Name"
+              placeholder="Guardian's Name"
+            />
+            {/*Emergency  number */}
             <CustomFormFiled
               fieldType={FromFieldType.PHONE_INPUT}
               control={form.control}
-              name="phone"
-              label="Phone Number"
+              name="emergencyContactNumber"
+              label="Emergency Contact Number"
               placeholder="+880 123456789"
             />
           </div>
+          <section className=" space-y-6">
+            <div className="mb-9 space-y-1"></div>
+            <h2 className="sub-header">Medical Information</h2>
+          </section>
+
+          <CustomFormFiled
+            fieldType={FromFieldType.SELECT}
+            control={form.control}
+            name="primaryPhysician"
+            label="Primary Physician"
+            placeholder="select a Physician"
+          >
+            {Doctors?.map((doctor, i) => (
+              <SelectItem key={doctor.name + i} value={doctor.name}>
+                <div className="flex cursor-pointer items-center gap-2">
+                  <Image
+                    src={doctor.image}
+                    width={32}
+                    height={32}
+                    alt="doctor"
+                    className="rounded-full border border-dark-500"
+                  />
+                  <p>{doctor.name}</p>
+                </div>
+              </SelectItem>
+            ))}
+          </CustomFormFiled>
+
+          {/* insurance  */}
+          <div className="flex flex-col gap-6 xl:flex-row">
+            <CustomFormFiled
+              fieldType={FromFieldType.INPUT}
+              control={form.control}
+              name="insuranceProvider"
+              label="Insurance Provider"
+              placeholder="BlueCross  BlueShield"
+            />
+            <CustomFormFiled
+              fieldType={FromFieldType.INPUT}
+              control={form.control}
+              name="insurancePolicyNumber"
+              label="Insurance Policy Number"
+              placeholder="A77B465C123D1315"
+            />
+          </div>
+          {/* allergies  */}
+          <div className="flex flex-col gap-6 xl:flex-row">
+            <CustomFormFiled
+              fieldType={FromFieldType.TEXTAREA}
+              control={form.control}
+              name="allergies"
+              label="Allergies (if any)"
+              placeholder="Peanuts, tec.."
+            />
+            <CustomFormFiled
+              fieldType={FromFieldType.TEXTAREA}
+              control={form.control}
+              name="currentMedication"
+              label="Current Medication (if any)"
+              placeholder="Paracetamol 500mg, Sergel 20mg"
+            />
+          </div>
+          {/* Family Medical history  */}
+          <div className="flex flex-col gap-6 xl:flex-row">
+            <CustomFormFiled
+              fieldType={FromFieldType.TEXTAREA}
+              control={form.control}
+              name="familyMedicalHistory"
+              label="Family Medical History"
+              placeholder="Mother had brain cancer and father had heart disease"
+            />
+            <CustomFormFiled
+              fieldType={FromFieldType.TEXTAREA}
+              control={form.control}
+              name="pastMedicalHistory"
+              label="Past Medical History"
+              placeholder="Appendectomy"
+            />
+          </div>
+
           <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
         </form>
       </Form>
