@@ -283,9 +283,33 @@ const RegisterForm = ({ user }: { user: User }) => {
             label="Scanned Copy Of Identification Document"
             renderSkeleton={(field) => (
               <FormControl>
-                <FileUploader  />
+                <FileUploader files={field.value} onChange={field.onChange} />
               </FormControl>
             )}
+          />
+
+          <section className=" space-y-6">
+            <div className="mb-9 space-y-1"></div>
+            <h2 className="sub-header">Consent & Privacy</h2>
+          </section>
+
+          <CustomFormFiled
+            fieldType={FromFieldType.CHECKBOX}
+            control={form.control}
+            name="treatmentConsent"
+            label="I  Consent To Treatment"
+          />
+          <CustomFormFiled
+            fieldType={FromFieldType.CHECKBOX}
+            control={form.control}
+            name="disclosureConsent"
+            label="I  Consent To disclosure of information"
+          />
+          <CustomFormFiled
+            fieldType={FromFieldType.CHECKBOX}
+            control={form.control}
+            name="privacyConsent"
+            label="I  Consent To privacy Policy"
           />
 
           <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
