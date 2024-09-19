@@ -13,9 +13,10 @@ import { createUser } from "@/lib/actions/patient.actions";
 import { FromFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
-import { Doctors, GenderOptions } from "@/constants";
+import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
+import FileUploader from "../fileUploader";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RegisterForm = ({ user }: { user: User }) => {
@@ -251,6 +252,41 @@ const RegisterForm = ({ user }: { user: User }) => {
               placeholder="Appendectomy"
             />
           </div>
+
+          <CustomFormFiled
+            fieldType={FromFieldType.SELECT}
+            control={form.control}
+            name="identificationType"
+            label="Identification Type"
+            placeholder="select a Identification Type"
+          >
+            {IdentificationTypes?.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
+          </CustomFormFiled>
+
+          <CustomFormFiled
+            fieldType={FromFieldType.INPUT}
+            control={form.control}
+            name="identificationNumber"
+            label="Identification Number"
+            placeholder="1234567859"
+          />
+
+          {/* gender */}
+          <CustomFormFiled
+            fieldType={FromFieldType.SKELETON}
+            control={form.control}
+            name="identificationDocument"
+            label="Scanned Copy Of Identification Document"
+            renderSkeleton={(field) => (
+              <FormControl>
+                <FileUploader  />
+              </FormControl>
+            )}
+          />
 
           <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
         </form>
