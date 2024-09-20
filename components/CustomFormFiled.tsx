@@ -80,7 +80,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               defaultCountry="BD"
               placeholder={placeholder}
               international
-              withCOuntryCallingCode
+              withCountryCallingCode
               value={field.value as E164Number | undefined}
               onChange={field.onChange}
               className="input-phone"

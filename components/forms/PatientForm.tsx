@@ -7,9 +7,9 @@ import { Form } from "@/components/ui/form";
 import CustomFormFiled from "../CustomFormFiled";
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
-import UserFormValidation from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { createUser } from "@/lib/actions/patient.actions";
+import { UserFormValidation } from "@/lib/validation";
 
 export enum FromFieldType {
   INPUT = "input",
@@ -47,7 +47,7 @@ const PatientForm = () => {
       const userData = { name, email, phone };
 
       const user = await createUser(userData);
-      console.log(user);
+      console.log("this is coming from patient user", user);
       if (user) {
         router.push(`/patients/${user.$id}/register`);
       }

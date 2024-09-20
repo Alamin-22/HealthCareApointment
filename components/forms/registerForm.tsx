@@ -21,7 +21,7 @@ import {
 } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
-import FileUploader from "../fileUploader";
+import FileUploader from "../FileUploader";
 import { PatientFormValidation } from "@/lib/validation";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -66,6 +66,7 @@ const RegisterForm = ({ user }: { user: User }) => {
       };
       // @ts-expect-error
       const patient = await registerPatient(patientData);
+      console.log("this is working new patient arrive",patient);
       if (patient) {
         return router.push(`/patients/${user.$id}/new-appointment`);
       }
