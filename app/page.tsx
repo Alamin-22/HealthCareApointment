@@ -7,7 +7,7 @@ const HomePageOfAppointment = () => {
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[860px] flex-1 flex-col py-10">
-          <Image
+          <Image 
             width={1000}
             height={1000}
             src={"/assets/icons/logo-full.svg"}
