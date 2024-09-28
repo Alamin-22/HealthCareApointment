@@ -67,7 +67,7 @@ export const registerPatient = async ({
       process.env.NEXT_PUBLIC_PATIENT_COLLECTION_ID,
       process.env.NEXT_PUBLIC_BUCKET_ID,
       process.env.NEXT_PUBLIC_PROJECT_ID,
-      process.env.NEXT_PUBLIC_ENDPOINT,
+      process.env.NEXT_PUBLIC_ENDPOINT
     );
     // Create new patient document -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#createDocument
     const newPatient = await databases.createDocument(
@@ -86,5 +86,20 @@ export const registerPatient = async ({
     return parseStringify(newPatient);
   } catch (error) {
     console.error("An error occurred while creating a new patient:", error);
+  }
+};
+
+// get patient
+
+export const getPatient = async (UserId: string) => {
+  try {
+    const patients = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_PATIENT_COLLECTION_ID!,
+      [Query.equal("userId", UserId)]
+    );
+    return parseStringify(patients.documents[0]);
+  } catch (error) {
+    console.log(error);
   }
 };

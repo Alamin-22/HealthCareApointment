@@ -1,4 +1,5 @@
 import AppointmentForm from "@/components/forms/AppointmentForm";
+import { getPatient } from "@/lib/actions/patient.actions";
 import Image from "next/image";
 
 const NewAppointmentPage = async ({ params: { userId } }: SearchParamProps) => {
@@ -15,9 +16,13 @@ const NewAppointmentPage = async ({ params: { userId } }: SearchParamProps) => {
             className="mb-12 h-10 w-fit"
           />
 
-          <AppointmentForm type={"create"} userId={userId} />
+          <AppointmentForm
+            type={"create"}
+            userId={userId}
+            patientId={patient.$id}
+          />
 
-          <p className="justify-items-end text-dark-600 xl:text-left">
+          <p className="copyright mt-10 py-12">
             @ 2024 CarePuls
           </p>
         </div>
