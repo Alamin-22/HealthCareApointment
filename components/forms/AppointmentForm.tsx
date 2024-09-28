@@ -8,12 +8,14 @@ import CustomFormFiled from "../CustomFormFiled";
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createUser } from "@/lib/actions/patient.actions";
-import { AppointmentFormValidation } from "@/lib/validation";
+import {
+  AppointmentFormValidation,
+  getAppointmentSchema,
+} from "@/lib/validation";
 import { Doctors } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
-import { scheduler } from "timers/promises";
+import { createAppointment } from "@/lib/actions/appointment.actions";
 
 export enum FromFieldType {
   INPUT = "input",
@@ -37,6 +39,8 @@ const AppointmentForm = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  const AppointmentFormValidation = getAppointmentSchema(type);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
@@ -50,7 +54,7 @@ const AppointmentForm = ({
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof UserFormValidation>) {
+  async function onSubmit(values: z.infer<typeof AppointmentFormValidation>) {
     setIsLoading(true);
     let status;
     switch (type) {
@@ -73,10 +77,17 @@ const AppointmentForm = ({
           patient: patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
-          reason: values.reason,
+          reason: values.reason!,
           note: values.note,
           status: status as Status,
         };
+        const appointment = await createAppointment(appointmentData);
+        if (appointment) {
+          form.reset();
+          router.push(
+            `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
+          );
+        }
       }
     } catch (error) {
       console.log(error);
