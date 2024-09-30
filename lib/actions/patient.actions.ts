@@ -5,9 +5,10 @@ import { ID, InputFile, Query } from "node-appwrite";
 import { databases, storage, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
 
+// CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
   try {
-    console.log("this is the main object", user);
+    // Create new user -> https://appwrite.io/docs/references/1.5.x/server-nodejs/users#create
     const newUser = await users.create(
       ID.unique(),
       user.email,
@@ -16,17 +17,20 @@ export const createUser = async (user: CreateUserParams) => {
       user.name
     );
 
-    console.log(newUser);
+    console.log("form patient.actions", newUser);
 
     return parseStringify(newUser);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error);
+    // Check existing user
     if (error && error?.code === 409) {
-      const documents = await users.list([Query.equal("email", [user.email])]);
+      const existingUser = await users.list([
+        Query.equal("email", [user.email]),
+      ]);
 
-      return documents?.users[0];
+      return existingUser.users[0];
     }
+    console.error("An error occurred while creating a new user:", error);
   }
 };
 
