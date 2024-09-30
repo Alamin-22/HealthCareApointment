@@ -1,13 +1,22 @@
+"use client";
 import PatientForm from "@/components/forms/PatientForm";
+import { PasskeyModal } from "@/components/PasskeyModal";
 import Image from "next/image";
 import Link from "next/link";
 
-const HomePageOfAppointment = () => {
+const HomePageOfAppointment = ({ searchParams }: SearchParamProps) => {
+  const isAdmin = searchParams.admin === "true";
+
   return (
     <div className="flex h-screen max-h-screen">
+      {isAdmin && (
+        <>
+          <PasskeyModal />
+        </>
+      )}
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[860px] flex-1 flex-col py-10">
-          <Image 
+          <Image
             width={1000}
             height={1000}
             src={"/assets/icons/logo-full.svg"}
@@ -16,12 +25,12 @@ const HomePageOfAppointment = () => {
           />
 
           <PatientForm />
-          
+
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">
               @ 2024 CarePuls
             </p>
-            <Link href={"/?admin===true"} className="text-green-500">
+            <Link href={"/?admin=true"} className="text-green-500">
               Admin
             </Link>
           </div>
